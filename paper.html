@@ -406,13 +406,13 @@ other and to global events. The World Risk Poll data provides
 researchers, policy-makers and the general public with a powerful lens
 through which to see the different types and degrees of risk faced by
 people around the world, as well as how perceptions and attitudes about
-risk are informed by geography and social circumstances.We have designed
-the <code>worldriskpollr</code> package to enable easy access to
-aggregated and disaggregated forms of the World Risk Poll data. In this
-article, we provide an explanation of the functionality of the package
-as well as an example application of it drawn from the 2023 Safety
-Perceptions Index <span class="citation">(Lloyd’s Register Foundation
-and Institute for Economics and Peace 2023)</span>.</p>
+risk are informed by geography and social circumstances. We have
+designed the <code>worldriskpollr</code> package to enable easy access
+to aggregated and disaggregated forms of the World Risk Poll data. In
+this article, we provide an explanation of the functionality of the
+package as well as an example application of it drawn from the 2023
+Safety Perceptions Index <span class="citation">(Lloyd’s Register
+Foundation and Institute for Economics and Peace 2023)</span>.</p>
 </div>
 <div id="functionality" class="section level1">
 <h1>Functionality</h1>
@@ -438,7 +438,7 @@ depicted in Table 1.</p>
 <pre class="r"><code>violence &lt;- wrp_search(&quot;violence&quot;)</code></pre>
 <table>
 <caption>
-World Risk Poll Search Result Example
+Table 1. World Risk Poll Search Result Example
 </caption>
 <thead>
 <tr>
@@ -570,12 +570,14 @@ groupings</p></li>
 </ul></li>
 </ul>
 <p>As shown in Table 2, the following lines of code return a dataframe
-with six columns:</p>
+with six columns - <code>geography</code>, <code>disaggregation</code>,
+<code>group</code>, <code>year</code>, <code>question</code>,
+<code>response</code> and <code>percentage</code>:</p>
 <pre class="r"><code>work_violence &lt;- wrp_get(geography = &quot;country&quot;, 
                          wrp_question_uid = &quot;VH1&quot;, disaggregation = 0)</code></pre>
 <table>
 <caption>
-World Risk Poll Data Retrieval Example
+Table 2. World Risk Poll Data Retrieval Example
 </caption>
 <thead>
 <tr>
@@ -743,21 +745,6 @@ Ever Experienced Physical Violence/Harassment at Work (all countries)
 </tr>
 </tbody>
 </table>
-<ul>
-<li><p><code>geography</code>: lists the selected geographic
-units</p></li>
-<li><p><code>disaggregation</code>: lists the disaggregation
-category</p></li>
-<li><p><code>group</code>: lists the different segments within the
-disaggregation category</p></li>
-<li><p><code>year</code>: lists the year the survey was
-administered</p></li>
-<li><p><code>question</code>: lists the full question name</p></li>
-<li><p><code>response</code>: lists the possible answers to each
-question</p></li>
-<li><p><code>percentage</code>: lists different groups’ response rates
-to each possible answer</p></li>
-</ul>
 <p>As such, a standard use case stringing <code>wrp_search</code> and
 <code>wrp_get</code> together could look like this:</p>
 <pre class="r"><code># Search for a topic
@@ -807,7 +794,7 @@ line of code returns a result that is partially depicted in Table 3.</p>
 violent_crime &lt;- wrp_search(&quot;violent crime&quot;)</code></pre>
 <table>
 <caption>
-World Risk Poll Violent Crime Data Retrieval Example
+Table 3. World Risk Poll Violent Crime Data Retrieval Example
 </caption>
 <thead>
 <tr>

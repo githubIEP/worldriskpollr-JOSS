@@ -55,7 +55,7 @@ violence <- wrp_search("violence")
 ```
 
 ```{r, message = FALSE, warning = FALSE, eval = knitr::is_html_output(), layout = "l-body-outset"}
-knitr::kable(head(violence), format = "html", caption = "World Risk Poll Search Result Example") 
+knitr::kable(head(violence), format = "html", caption = "Table 1. World Risk Poll Search Result Example") 
 ```
 
 ```{r, message = FALSE, warning = FALSE, eval = knitr::is_latex_output()}
@@ -99,7 +99,7 @@ The `wrp_get` function provides users with a way of accessing aggregated data ba
 
     -   9: `Children in household`: response rates based on the number of children under 15 in the household - six groupings
 
-As shown in Table 2, the following lines of code return a dataframe with six columns:
+As shown in Table 2, the following lines of code return a dataframe with six columns (`geography`, `disaggregation`, `group`, `year`, `question`, `response`, and `percentage`):
 
 ```{r, echo = TRUE, message = FALSE, warning = FALSE}
 work_violence <- wrp_get(geography = "country", 
@@ -108,7 +108,7 @@ work_violence <- wrp_get(geography = "country",
 ```
 
 ```{r, message = FALSE, warning = FALSE, eval = knitr::is_html_output(), layout = "l-body-outset"}
-knitr::kable(head(work_violence), format = "html", caption = "World Risk Poll Data Retrieval Example") 
+knitr::kable(head(work_violence), format = "html", caption = "Table 2. World Risk Poll Data Retrieval Example") 
              
 ```
 
@@ -118,20 +118,6 @@ work_violence <- work_violence %>%
 knitr::kable(head(work_violence), format = "latex", caption = "World Risk Poll Data Retrieval Example")  %>% 
   kableExtra::kable_styling(font_size = 5)
 ```
-
--   `geography`: lists the selected geographic units
-
--   `disaggregation`: lists the disaggregation category
-
--   `group`: lists the different segments within the disaggregation category
-
--   `year`: lists the year the survey was administered
-
--   `question`: lists the full question name
-
--   `response`: lists the possible answers to each question
-
--   `percentage`: lists different groups' response rates to each possible answer
 
 As such, a standard use case stringing `wrp_search` and `wrp_get` together could look like this:
 
@@ -163,7 +149,7 @@ violent_crime <- wrp_search("violent crime")
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, eval = knitr::is_html_output(), layout = "l-body-outset"}
 # Search for questions around violent crime
-knitr::kable(head(violent_crime), format = "html", caption = "World Risk Poll Violent Crime Data Retrieval Example") 
+knitr::kable(head(violent_crime), format = "html", caption = "Table 3. World Risk Poll Violent Crime Data Retrieval Example") 
 ```
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE, eval = knitr::is_latex_output()}
