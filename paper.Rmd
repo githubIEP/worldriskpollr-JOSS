@@ -1,20 +1,17 @@
 ---
 title: "Tracking Global Sentiment and Experiences of Risk Using worldriskpollr"
-authors:  
+authors:
   - name: David Hammond
-    affiliation: Institute for Economics and Peace
-    address:
-    - 205 Pacific Highway
-    - Sydney, Australia
-    url: https://www.visionofhumanity.org/
+    equal-contrib: true
+    affiliation: 1
     email:  dhammond@economicsandpeace.org
   - name: Alex Vedovi
-    affiliation: Institute for Economics and Peace
-    address:
-    - 205 Pacific Highway
-    - Sydney, Australia
-    url: https://www.visionofhumanity.org/
+    equal-contrib: true 
+    affiliation: 1
     email:  avedovi@economicsandpeace.org
+affiliations:
+ - name: Institute for Economics and Peace, Sydney, Australia, https://www.visionofhumanity.org/
+   index: 1
 date: 15 May 2023
 bibliography: paper.bib
 
@@ -34,14 +31,14 @@ Effective and efficient decision-making depends on the accurate assessment of ri
 
 # Statement of need
 
-In a time of rising uncertainty, it is important to understand perceptions of safety across different regions, countries and demographic groups, and to examine how different risks relate to each other and to global events. The World Risk Poll data provides researchers, policy-makers and the general public with a powerful lens through which to see the different types and degrees of risk faced by people around the world, as well as how perceptions and attitudes about risk are informed by geography and social circumstances.We have designed the `worldriskpollr` package to enable easy access to aggregated and disaggregated forms of the World Risk Poll data. In this article, we provide an explanation of the functionality of the package as well as an example application of it drawn from the 2023 Safety Perceptions Index [@spi2023].
+In a time of rising uncertainty, it is important to understand perceptions of safety across different regions, countries and demographic groups, and to examine how different risks relate to each other and to global events. The World Risk Poll data provides researchers, policy-makers and the general public with a powerful lens through which to see the different types and degrees of risk faced by people around the world, as well as how perceptions and attitudes about risk are informed by geography and social circumstances. We have designed the `worldriskpollr` package to enable easy access to aggregated and disaggregated forms of the World Risk Poll data. In this article, we provide an explanation of the functionality of the package as well as an example application of it drawn from the 2023 Safety Perceptions Index [@spi2023].
 
 
 # Functionality
 
 The `worldriskpollr` package is designed to provide easy and interactive access to the aggregated and disaggregated survey data collected through the World Risk Poll. Using the following functions, users can download and process the World Risk Poll data into their package cache memory, then extract questions of interest.
 
-## Search the World Risk Poll with `wrp_search`
+### Search the World Risk Poll with `wrp_search`
 
 To search for a question of interest, `worldriskpollr` provides `wrp_search` for users to enter search terms. If the search term is a match, `wrp_search` will return a data frame with the following columns.
 
@@ -66,7 +63,7 @@ knitr::kable(head(violence), format = "latex", caption = "World Risk Poll Search
   kableExtra::kable_styling(font_size = 5)
 ```
 
-## Getting aggregated World Risk Poll data using `wrp_get`
+### Getting aggregated World Risk Poll data using `wrp_get`
 
 The `wrp_get` function provides users with a way of accessing aggregated data based on geographic units -- individual countries or groupings of countries. Users select one of four geographic units they would like to analyse. From there, a data frame is produced with eight disaggregations based on different demographic categories of survey respondents.
 
@@ -225,9 +222,9 @@ ggplot(worry_personal_experience, aes(x = short_question, y = percentage/100)) +
   scale_y_continuous(labels = scales::percent)
 ```
 
-#Acknowledgments
+# Acknowledgments
 
-The authors acknowledge the support of the Lloyd's Register Foundation in the development of this article, which forms part of a collaboration between the Foundation and the Institute for Economics and Peace. We also wish to acknowledge Thomas Morgan for developing the index framework for the first Safety Perceptions Index, which was released in 2022.
+The authors acknowledge the support of the Lloyd's Register Foundation in the development of this article, which forms part of a multi-year collaboration between the Foundation and the Institute for Economics and Peace. We also wish to acknowledge Thomas Morgan for developing the index framework for the first Safety Perceptions Index, which was released in 2022.
 
 
-#References
+# References
