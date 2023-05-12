@@ -12,21 +12,14 @@ authors:
 affiliations:
  - name: Institute for Economics and Peace, Sydney, Australia, https://www.visionofhumanity.org/
    index: 1
-date: 15 May 2023
+date: 12 May 2023
 bibliography: paper.bib
 
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
-library(plotly)
-library(ggplot2)
-library(worldriskpollr)
-```
-
 # Summary
 
-Effective and efficient decision-making depends on the accurate assessment of risk. Despite this, it is well established that humans struggle to assess risk accurately [@kahneman2011thinking, @Taleb04, @taleb_black_2008, @Taleb12, @wb2013]. The gap between perceived and actual levels of risk are important to understand, as biases can lead to poor decision-making, which can adversely impact individual and collective wellbeing. The World Risk Poll, designed by the Lloyd's Register Foundation, is a global survey of perceptions of risk and experiences of harm that can be used to explore the relationships between the two. The Poll has been carried out by Gallup in 2019 and 2021 as part of the Gallup World Poll, with additional surveys planned for 2023 and 2025. It draws on interview responses from over 125,000 people from more than 120 countries. This paper will demonstrate how the new R package `worldriskpollr` provides easy access to aggregated and disaggregated forms of the World Risk Poll data based on geography and the demographic characteristics of respondents.
+Effective and efficient decision-making depends on the accurate assessment of risk. Despite this, it is well established that humans struggle to assess risk accurately [@kahneman2011thinking]. The gap between perceived and actual levels of risk are important to understand, as biases can lead to poor decision-making, which can adversely impact individual and collective wellbeing. The World Risk Poll, designed by the Lloyd's Register Foundation, is a global survey of perceptions of risk and experiences of harm that can be used to explore the relationships between the two. The Poll has been carried out by Gallup in 2019 and 2021 as part of the Gallup World Poll, with additional surveys planned for 2023 and 2025. It draws on interview responses from over 125,000 people in more than 120 countries. This paper demonstrates how the new R package `worldriskpollr` provides easy access to aggregated and disaggregated forms of the World Risk Poll data based on geography and the demographic characteristics of respondents.
   
 
 # Statement of need
@@ -38,34 +31,21 @@ In a time of rising uncertainty, it is important to understand perceptions of sa
 
 The `worldriskpollr` package is designed to provide easy and interactive access to the aggregated and disaggregated survey data collected through the World Risk Poll. Using the following functions, users can download and process the World Risk Poll data into their package cache memory, then extract questions of interest.
 
-### Search the World Risk Poll with `wrp_search`
+To search for a question of interest, `worldriskpollr` provides `wrp_search` for users to enter search terms. If the search term is a match, `wrp_search` will return a dataframe with the following columns.
 
-To search for a question of interest, `worldriskpollr` provides `wrp_search` for users to enter search terms. If the search term is a match, `wrp_search` will return a data frame with the following columns.
+-   `wrp_question_uid`: the unique identifier for the question (needed to use the function `wrp_get`)
 
--   `wrp_question_uid`: the unique identifier for the question, needed to use the function `wrp_get`
+-   `question`: the full name of the question, as coded in the Poll
 
--   `question`: the question in full
+-   `responses`: all the possible responses recorded in the Poll (e.g. "Yes"", "No", "Very Worried", etc.)
 
--   `responses`: the responses given in the Poll
+The following line of code returns a list of all the questions and possible responses to World Risk Poll questions containing the word "violence".
 
-The following line of code returns a result that is partially depicted in Table 1.
-
-```{r, echo = TRUE, message = FALSE, warning = FALSE}
+```r
 violence <- wrp_search("violence")
 ```
 
-```{r, message = FALSE, warning = FALSE, eval = knitr::is_html_output(), layout = "l-body-outset"}
-knitr::kable(head(violence), format = "html", caption = "Table 1. World Risk Poll Search Result Example") 
-```
-
-```{r, message = FALSE, warning = FALSE, eval = knitr::is_latex_output()}
-knitr::kable(head(violence), format = "latex", caption = "World Risk Poll Search Result Example")  %>% 
-  kableExtra::kable_styling(font_size = 5)
-```
-
-### Getting aggregated World Risk Poll data using `wrp_get`
-
-The `wrp_get` function provides users with a way of accessing aggregated data based on geographic units -- individual countries or groupings of countries. Users select one of four geographic units they would like to analyse. From there, a data frame is produced with eight disaggregations based on different demographic categories of survey respondents.
+Users can then make use of the `wrp_get` function to access aggregated data based on geographic units -- that is, individual countries or groupings of countries. Users select one of four geographic units they would like to analyse. From there, they can add a specification using nine disaggregation options (including "No disaggregation") to produce a dataframe based on different demographic categories of survey respondents.
 
 -   **Aggregations based on *geographic units*:**
 
@@ -99,29 +79,16 @@ The `wrp_get` function provides users with a way of accessing aggregated data ba
 
     -   9: `Children in household`: response rates based on the number of children under 15 in the household - six groupings
 
-As shown in Table 2, the following lines of code return a dataframe with six columns (`geography`, `disaggregation`, `group`, `year`, `question`, `response`, and `percentage`):
+The following lines of code return a dataframe showing the country-level response rates to "VH1", a World Risk Poll question asking if respondents have ever had an experience of violence or harassment in the workplace. Further, it specifies that the results should not be disaggregated by any demographic marker. This dataframe includes with six columns: `geography`, `disaggregation`, `group`, `year`, `question`, `response`, and `percentage`.
 
-```{r, echo = TRUE, message = FALSE, warning = FALSE}
+```r
 work_violence <- wrp_get(geography = "country", 
                          wrp_question_uid = "VH1", disaggregation = 0)
-             
-```
+```             
 
-```{r, message = FALSE, warning = FALSE, eval = knitr::is_html_output(), layout = "l-body-outset"}
-knitr::kable(head(work_violence), format = "html", caption = "Table 2. World Risk Poll Data Retrieval Example") 
-             
-```
+As such, a standard use case stringing of `wrp_search` and `wrp_get` together could look like this:
 
-```{r, message = FALSE, warning = FALSE, eval = knitr::is_latex_output()}
-work_violence <- work_violence %>% 
-  mutate(question = gsub("/", "/\n", question))
-knitr::kable(head(work_violence), format = "latex", caption = "World Risk Poll Data Retrieval Example")  %>% 
-  kableExtra::kable_styling(font_size = 5)
-```
-
-As such, a standard use case stringing `wrp_search` and `wrp_get` together could look like this:
-
-```{r, echo = TRUE, message = FALSE, warning = FALSE}
+```r
 # Search for a topic
 tmp <- wrp_search("violence")
 # Pick the question of interest
@@ -134,39 +101,28 @@ tmp <- wrp_get(geography = "country",
                wrp_question_uid = tmp, disaggregation = 0)
 ```
 
-# Example Application - Worry and First-hand Experience of Risk
+# Example Application: Worry and Experience of Risk
 
 The World Risk Poll allows users to compare levels of worry about a risk with levels of first- and second-hand experience with that risk. This is particularly interesting in the current media context. The following example is one of the key findings in the 2023 Safety Perceptions Index [@spi2023].
 
 > The news media has long been critiqued for giving outsized focus to comparatively rare occurrences, particularly violent crime, which serves to inflate perceptions of the danger of such threats [@Altheide2018]. Recent analyses have demonstrated that this dynamic is particularly pronounced with social media. A study from Finland revealed that, while habitual consumers of traditional news media were five per cent more likely than non-consumers to report a fear of violent crime, those regularly consuming both traditional and social news media were ten per cent more likely to be fearful. Moreover, those consuming a combination of traditional, social, and alternative information sources (the latter including disreputable or unreliable sources) were 16 per cent more likely to report fearfulness of violent crime [@Nsi2020]. In contrast, other types of harm, such as those related to mental health and the workplace, tend to receive less media coverage, while also being associated with higher degrees of perceived controllability [@Barnetson2015].
 
-To compare levels of worry and experience of a specific risk in the World Risk Poll, users can first search questions around a theme. In this paper, the authors have selected "violent crime". The following line of code returns a result that is partially depicted in Table 3.
+To compare levels of worry and experience of a specific risk in the World Risk Poll, users can first search questions around a theme. In this paper, the authors have selected "violent crime". The following line of code returns a dataframe with World Risk Poll questions containing the term "violent crime".
 
-```{r, echo = TRUE, message = FALSE, warning = FALSE}
+```r
 # Search for questions around violent crime
 violent_crime <- wrp_search("violent crime")
 ```
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE, eval = knitr::is_html_output(), layout = "l-body-outset"}
-# Search for questions around violent crime
-knitr::kable(head(violent_crime), format = "html", caption = "Table 3. World Risk Poll Violent Crime Data Retrieval Example") 
-```
-
-```{r, echo = FALSE, message = FALSE, warning = FALSE, eval = knitr::is_latex_output()}
-# Search for questions around violent crime
-knitr::kable(head(violent_crime), format = "latex", caption = "World Risk Poll Violent Crime Data Retrieval Example") %>% 
-  kableExtra::kable_styling(font_size = 5)
-```
-
-From this search, it can be seen that the following questions are relevant:
+The resulting dataframe shows two particularly relevant questions for comparing rates of worry and experience related to violent crime. Each one is associated with one or more possible responses that are useful for assessing acute worry and personal experience:
 
 -   **Q4C: Worried Violent Crime Could Cause Serious Harm** - to compare worry vs experience, the analysis will focus on the proportion of respondents answering "Very worried".
 
 -   **Q5C: Experienced Harm in Past Two Years: Violent Crime** - to compare worry vs experience, the analysis will sum the proportion of respondents answering "Yes, personally experienced" and "Both" (with "Both" referring to both personal experience and knowing someone else who has experienced it).
 
-The following example aggregates these statistics at the global level. This can be done the following way:
+The following example aggregates these statistics at the global level, in the following way:
 
-```{r, echo = TRUE, message = FALSE, warning = FALSE}
+```r
 # Retrieve globally aggregated data on levels of worry of violent crime
 worry <- wrp_get(geography = "world", 
                  wrp_question_uid = "Q4C", disaggregation = 0) %>%
@@ -175,7 +131,7 @@ worry <- wrp_get(geography = "world",
   summarise(percentage = sum(percentage)) %>%
   ungroup() %>%
   mutate(short_question = "Worry about Violent Crime")
-
+  
 # Retrieve globally aggregated data on levels of experience on violent crime
 personal_experience <- wrp_get(geography = "world", 
                       wrp_question_uid = "Q5C",
@@ -189,24 +145,28 @@ personal_experience <- wrp_get(geography = "world",
            
 ```
 
-From these dataframes, it can be seen that Q4C was asked in both 2019 and 2021. However, question Q5C only returns results for 2021. To make the two comparable, we can filter by year, so that the results match in the two dataframes. We can then combine them into a single dataframe. After this, by plotting the response rates to these two questions in Figure \@ref(fig:violent-crime), we find that the number of people who worry greatly about violent crime is more than four times higher than the number who have recently experienced it first hand.
+From these dataframes, it can be seen that Q4C was asked in both 2019 and 2021. However, question Q5C only returns results for 2021. To make the two comparable, we can filter by year, so that the results match in the two dataframes. We can then combine them into a single dataframe. 
 
-```{r, echo = TRUE, message = FALSE, warning = FALSE}
-# Make data frames include the same years
+```r
+# Make dataframes include the same years
 worry <- worry %>% filter(year %in% personal_experience$year)
-# combine data frames for plotting
+# Combine dataframes for plotting
 worry_personal_experience <- worry %>% rbind(personal_experience)       
 ```
 
-```{r violent-crime, echo = TRUE, message = FALSE, warning = FALSE, fig.cap = "Global Responses to Worry and Experience of Violent Crime", fig.alt="Globally, twice as many people worry about violent crime than have expererienced it or know someone who has experienced it"}
-ggplot(worry_personal_experience, aes(x = short_question, y = percentage/100)) + 
+After this, the following code can be used to plot the response rates to these two questions, as shown in the figure below, we find that the number of people who worry greatly about violent crime is more than four times higher than the number who have recently experienced it first hand.
+
+```r
+p=ggplot(worry_personal_experience, aes(x = short_question, y = percentage/100)) + 
   geom_bar(stat = "identity", fill = "cornflowerblue") + 
   theme_minimal() +
   labs(x = "", 
        y = "Percentage of Global Population", 
        caption = "SOURCE: Lloyd's Register Foundation World Risk Poll") +
   scale_y_continuous(labels = scales::percent)
+print(p)
 ```
+![](fig-1.png)
 
 # Acknowledgments
 
